@@ -123,5 +123,5 @@ Pull requests are welcome! If you find a bug or have a feature idea, open an iss
 
 ---
 
-Made with ❤️ by [Sauham](https://github.com/Sauham)
+Made by [Sauham](https://github.com/Sauham)
 
