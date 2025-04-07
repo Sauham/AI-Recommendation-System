@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Recommender System</title>
+</head>
+<body>
+    <h1>Enter Customer ID</h1>
+    <input type="text" id="customer_id" placeholder="e.g., C1000">
+    <button onclick="getRecommendations()">Get Recommendations</button>
+
+    <pre id="output"></pre>
+
+    <script>
+        async function getRecommendations() {
+            const customerId = document.getElementById("customer_id").value;
+
+            const response = await fetch("/recommend", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ customer_id: customerId })
+            });
+
+            const data = await response.json();
+            document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+    <div id="recommendations" class="results"></div>
+
+    <script>
+      document.getElementById('recommendForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const customerId = document.getElementById('customerId').value;
+    
+        const response = await fetch('/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customer_id: customerId })
+        });
+    
+        const result = await response.json();
+        const recommendationsDiv = document.getElementById('recommendations');
+        recommendationsDiv.innerHTML = '';
+    
+        if (result.recommendations) {
+          for (const product of result.recommendations) {
+            const res = await fetch(`/product/${product.product_id}`);
+            const data = await res.json();
+    
+            const div = document.createElement('div');
+            div.innerHTML = `
+              <h4>${data.Category} - ${data.Subcategory}</h4>
+              <p><strong>Brand:</strong> ${data.Brand}</p>
+              <p><strong>Price:</strong> ₹${data.Price}</p>
+              <p><strong>Recommendation Probability:</strong> ${data.Probability_of_Recommendation}</p>
+              <hr/>
+            `;
+            recommendationsDiv.appendChild(div);
+          }
+        } else {
+          recommendationsDiv.innerText = result.error || 'No recommendations.';
+        }
+      });
+    </script>
+    
+</body>
+</html>
