@@ -1,38 +1,31 @@
+import os, sys
 from flask import Flask, request, jsonify, render_template
-import os
-import sys
 import sqlite3
-# Set absolute paths
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-AGENTS_DIR = os.path.join(BASE_DIR, 'agents')
-DB_PATH = os.path.join(BASE_DIR, 'db', 'ecommerce.db')
-CUSTOMER_CSV = os.path.join(BASE_DIR, 'data', 'customer_data_collection.csv')
-PRODUCT_CSV = os.path.join(BASE_DIR, 'data', 'product_recommendation_data.csv')
 
-# Add agents to sys.path
+# Setup base paths
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
+AGENTS_DIR = os.path.join(PARENT_DIR, "agents")
+DB_PATH = os.path.join(PARENT_DIR, "db", "ecommerce.db")
+
 sys.path.append(AGENTS_DIR)
 
 from customer_agent import CustomerAgent
 from product_agent import ProductAgent
 from recommendation_agent import RecommendationAgent
 
-# Initialize Flask app
 app = Flask(__name__)
+
 # Initialize agents
 customer_agent = CustomerAgent(DB_PATH)
 product_agent = ProductAgent(DB_PATH)
 recommendation_agent = RecommendationAgent(DB_PATH)
 
-# # Initialize agents
-# customer_agent = CustomerAgent(CUSTOMER_CSV, DB_PATH)
-# product_agent = ProductAgent(PRODUCT_CSV, DB_PATH)
-# recommendation_agent = RecommendationAgent(DB_PATH)
-
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return "Flask API is running."
 
-@app.route('/recommend', methods=['POST'])
+@app.route("/recommend", methods=["POST"])
 def recommend():
     data = request.get_json()
     customer_id = data.get("customer_id")
@@ -46,22 +39,23 @@ def recommend():
         return jsonify({"customer_id": customer_id, "recommendations": recommendations})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-@app.route('/product/<product_id>', methods=['GET'])
+
+@app.route("/product/<product_id>", methods=["GET"])
 def get_product_details(product_id):
     try:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM products WHERE Product_ID = ?", (product_id,))
         row = cursor.fetchone()
+        columns = [desc[0] for desc in cursor.description]
         conn.close()
 
         if row:
-            columns = [description[0] for description in cursor.description]
             return jsonify(dict(zip(columns, row)))
         else:
             return jsonify({"error": "Product not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

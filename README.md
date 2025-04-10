@@ -1,105 +1,159 @@
-# 🧠 AI Recommendation System
+# 🛍️ Multi-Agent AI Recommendation System for E-Commerce
 
-This project is a **multi-agent AI system** designed for hyper-personalized product recommendations in an e-commerce setting. It leverages customer profiling, browsing behavior, purchase history, and product intelligence to deliver tailored recommendations using a modular, extensible agent-based framework.
+## 🧠 Challenge Overview
 
----
+In the competitive world of e-commerce, providing personalized and relevant product recommendations is key to improving customer experience, increasing conversion rates, and boosting sales.
 
-## 🚀 Features
+This project addresses that challenge by building a **multi-agentic AI system** that delivers **hyper-personalized product recommendations** for an e-commerce platform. The system utilizes autonomous agents representing customers, products, and recommendation engines, which collaborate to:
 
-- 🔍 **Customer Behavior Analysis**: Understand customer interests, segment profiles.
-- 🤖 **Multi-Agent Architecture**: Separate agents for customer, product, and recommendation logic.
-- 📊 **Smart Recommendations**: Tailored product suggestions based on user preferences and behavior.
-- 🧠 **Long-Term Memory**: SQLite used for persistent customer and product state storage.
-- 💡 **Interactive Frontend**: Simple web interface to input customer IDs and view recommendations.
-- 📁 **Product Detail Linking**: Click on recommended products to view detailed attributes.
+- Analyze browsing behavior  
+- Predict user preferences  
+- Optimize the overall shopping experience  
 
----
+By doing so, the system helps the e-commerce platform:
 
-## 🧬 Tech Stack
-
-- **Backend**: Python, FastAPI
-- **Frontend**: HTML/CSS, JavaScript (Vanilla)
-- **Database**: SQLite
-- **Multi-Agent System**: Custom agents with modular design
-- **Others**: Pandas, JSON
+- ✅ Deliver tailored recommendations based on individual behavior and interests  
+- ✅ Improve engagement  
+- ✅ Increase average order value  
+- ✅ Enhance customer retention  
+- ✅ Drive higher conversion rates  
 
 ---
 
-## 📁 Project Structure
+## 🧾 Current Industry Process
 
+### 1. Customer Data Collection and Segmentation
+
+- E-commerce teams manually collect and store customer browsing behavior, purchase history, and demographic data in databases or spreadsheets.
+- Customer profiles are created based on specific attributes like age, gender, location, and purchase history.
+- Customers are manually segmented into categories (e.g., frequent buyers, new visitors).
+
+### 2. Product Recommendations
+
+- Marketing teams manually analyze data to identify patterns and trends.
+- Based on customer segmentation, they select a set of products to recommend.
+- For example:
+  - Frequent buyers → Related products  
+  - New visitors → Popular or discounted products  
+
+This process is time-consuming, lacks real-time personalization, and limits scalability.
+
+---
+
+## 🚀 Solution: Multi-Agent System
+
+This project introduces a **multi-agent framework** where different agents communicate and collaborate to deliver personalized recommendations:
+
+- 🤖 **CustomerAgent**: Maintains customer data and simulates user preferences.
+- 📦 **ProductAgent**: Manages product information (category, price, brand, etc.).
+- 🧠 **RecommendationAgent**: Uses customer and product data to compute recommendations based on collaborative and content-based filtering.
+- 💾 **SQLite Database**: Acts as persistent long-term memory for all agents.
+
+Agents interact autonomously to simulate a real-world e-commerce recommendation engine.
+
+---
+
+## 🛠️ Tech Stack
+
+| Component         | Technology / Tool             |
+|------------------|-------------------------------|
+| Backend           | Python, Flask                 |
+| Frontend          | Streamlit                     |
+| Database          | SQLite                        |
+| Data Processing   | Pandas, NumPy                 |
+| Machine Learning  | Scikit-learn                  |
+| Visualization     | Plotly, Matplotlib            |
+| Architecture      | Multi-agent Python classes    |
+
+---
+
+## 💡 Key Features
+
+- 🔍 Personalized product recommendations per user
+- 📊 Visual insights (brand distribution, pricing trends)
+- 🗂️ Real-time product filtering and interaction
+- 🧠 Autonomous agent communication
+- 💾 Persistent memory using SQLite
+- 🎯 Streamlined UI with Streamlit
+
+---
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/your-screenshot-link" alt="App Screenshot" width="800"/>
+</p>
+
+---
+
+## 🧪 How It Works
+
+1. Enter a **Customer ID** (e.g., `C1000`) on the UI.
+2. System queries the database and loads customer details.
+3. CustomerAgent passes info to RecommendationAgent.
+4. RecommendationAgent fetches relevant products from ProductAgent.
+5. Recommended products are displayed in UI with insights.
+
+---
+
+## ⚙️ Installation & Setup
+
+### 🔄 Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/multi-agent-recommendation-system.git
+cd multi-agent-recommendation-system
+```
+
+### 📦 Install Dependencies
+
+Make sure you have Python ≥ 3.8 and run:
+```bash
+pip install -r requirements.txt
+```
+
+### 🚀 Start the Application
+
+1. Run Flask backend
+From the app/ directory or root:
+```bash
+cd app
+python app.py
+```
+
+2. Run Streamlit frontend
+From your root project directory:
+```bash
+cd streamlit_app
+streamlit run streamlit_app.py
+```
+
+---
+
+## 📚 Project Structure
 ```
 AI-Recommendation-System/
-│
+│   ├── __init__.py              
+│   ├── customer_agent.py   
+│   ├── interaction_agent.py   
+│   ├── product_agent.py
+│   └──recommendation_agent.py           
 ├── app/
-│   ├── app.py              # FastAPI server
-│   ├── customer_agent.py   # Customer logic & memory
-│   ├── product_agent.py    # Product intelligence
-│   ├── recommender_agent.py# Core recommendation engine
-│   ├── database/           # SQLite DB files
-│   └── templates/          # HTML frontend files
-│
+│   ├── app.py   
 ├── data/
 │   ├── customers.csv       # Customer dataset
 │   └── products.csv        # Product dataset
-│
+├── db/
+│    └──ecommerce.db
+├── streamlit_app/
+│   └── streamlit_app.py   # Streamlit frontend
+├── venv/
+├── check_customer.py
+├── main.py
+├── requirements.txt
+├── setup_db.py
 └── README.md               # You're here!
 ```
-
----
-
-## 🧪 How to Run
-
-1. **Clone the repo**  
-   ```bash
-   git clone https://github.com/Sauham/AI-Recommendation-System.git
-   cd AI-Recommendation-System/app
-   ```
-
-2. **Create a virtual environment**  
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # or venv\Scripts\activate on Windows
-   ```
-
-3. **Install dependencies**  
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Start the server**  
-   ```bash
-   uvicorn app:app --reload
-   ```
-
-5. **Visit**  
-   Open your browser and go to:  
-   `http://127.0.0.1:8000`
-
----
-
-## 📌 Example
-
-**Input**:
-```json
-Customer ID: C1000
-```
-
-**Output**:
-```json
-[
-  {
-    "product_id": "P2231",
-    "category": "Fitness",
-    "subcategory": "Dumbbells",
-    "brand": "Brand B",
-    "price": 3418,
-    "recommendation_score": 1
-  },
-  ...
-]
-```
-
-Click on any product to view full details!
 
 ---
 
@@ -121,7 +175,5 @@ Pull requests are welcome! If you find a bug or have a feature idea, open an iss
 - Add collaborative filtering-based recommendations
 - Support user login and personalized dashboards
 
----
 
-Made by [Sauham](https://github.com/Sauham)
 
